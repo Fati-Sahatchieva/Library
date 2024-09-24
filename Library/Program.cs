@@ -1,3 +1,6 @@
+using Library.Models;
+using Microsoft.EntityFrameworkCore;
+
 namespace Library
 {
     public class Program
@@ -5,6 +8,10 @@ namespace Library
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            //ƒобав€не на контекста на базата данни
+            builder.Services.AddDbContext<LibraryDbContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("LibraryDbContext")));
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
@@ -28,7 +35,7 @@ namespace Library
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Books}/{action=Index}/{id?}");
 
             app.Run();
         }
