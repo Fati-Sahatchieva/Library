@@ -52,12 +52,11 @@ namespace Library.Controllers
         }
 
         // POST: Books/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("BookId,Title,Author,ReleasedDate,BooksCount,CategoryId")] Book book)
         {
+            ModelState.Remove("Category");
             if (ModelState.IsValid)
             {
                 _context.Add(book);
@@ -97,6 +96,7 @@ namespace Library.Controllers
                 return NotFound();
             }
 
+            ModelState.Remove("Category");
             if (ModelState.IsValid)
             {
                 try

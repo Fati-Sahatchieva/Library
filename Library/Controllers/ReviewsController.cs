@@ -47,7 +47,7 @@ namespace Library.Controllers
         // GET: Reviews/Create
         public IActionResult Create()
         {
-            ViewData["BookId"] = new SelectList(_context.Books, "BookId", "Author");
+            ViewData["BookId"] = new SelectList(_context.Books, "BookId", "Title");
             return View();
         }
 
@@ -58,13 +58,14 @@ namespace Library.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ReviewId,Rating,Comment,BookId")] Review review)
         {
+            ModelState.Remove("Book");
             if (ModelState.IsValid)
             {
                 _context.Add(review);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BookId"] = new SelectList(_context.Books, "BookId", "Author", review.BookId);
+            ViewData["BookId"] = new SelectList(_context.Books, "BookId", "Title", review.BookId);
             return View(review);
         }
 
@@ -96,7 +97,7 @@ namespace Library.Controllers
             {
                 return NotFound();
             }
-
+            ModelState.Remove("Book");
             if (ModelState.IsValid)
             {
                 try

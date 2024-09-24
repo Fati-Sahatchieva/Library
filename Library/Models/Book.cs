@@ -14,16 +14,21 @@ namespace Library.Models
         [Required]
         [MaxLength(60)]
         public string Author { get; set; }
+
         [Required]
         public DateOnly ReleasedDate { get; set; }
+
         [Required]
         [Range(1, 1000)]
         public int BooksCount { get; set; }
+
         [Required]
         public int CategoryId { get; set; }
 
-        [ForeignKey(nameof(CategoryId))]
+        [ForeignKey("CategoryId")]
         public Category Category { get; set; }
+
+        public ICollection<Review> Reviews { get; set; }
 
     }
 }
