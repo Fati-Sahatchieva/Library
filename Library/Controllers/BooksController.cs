@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Library.Models;
+using System.Text;
 
 namespace Library.Controllers
 {
@@ -35,6 +36,7 @@ namespace Library.Controllers
 
             var book = await _context.Books
                 .Include(b => b.Category)
+                .Include(b => b.Reviews)
                 .FirstOrDefaultAsync(m => m.BookId == id);
             if (book == null)
             {
@@ -54,7 +56,7 @@ namespace Library.Controllers
         // POST: Books/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BookId,Title,Author,ReleasedDate,BooksCount,CategoryId")] Book book)
+        public async Task<IActionResult> Create([Bind("BookId,Title,Author,PublicationYear,BookCopies,CategoryId")] Book book)
         {
             ModelState.Remove("Category");
             if (ModelState.IsValid)
@@ -89,7 +91,7 @@ namespace Library.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BookId,Title,Author,ReleasedDate,BooksCount,CategoryId")] Book book)
+        public async Task<IActionResult> Edit(int id, [Bind("BookId,Title,Author,PublicationYear,BookCopies,CategoryId")] Book book)
         {
             if (id != book.BookId)
             {
@@ -159,5 +161,77 @@ namespace Library.Controllers
         {
             return _context.Books.Any(e => e.BookId == id);
         }
+
+        public async Task<IActionResult> ExportToCSV()
+        {
+            var books = await _context.Books
+                .Include(b => b.Category).ToListAsync();
+
+            var csv = new StringBuilder();
+
+            csv.AppendLine("BookId,Title,Author,PublicationYear,BookCopies,CategoryId");
+
+            foreach (var book in books) 
+            {
+                csv.AppendLine($"{book.BookId}, {book.Title}, {book.Author}, {book.PublicationYear}, {book.BookCopies}, {book.Category?.Name}");
+            }
+
+            var filename = $"books_{DateTime.Now.ToString("yyyyMMddHHmmss")}.csv";
+            return File(Encoding.UTF8.GetBytes(csv.ToString()), "text/csv", filename);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ImportFromCSV(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("Pleas upload a valid CSV file.");
+            }
+
+            using (var streamReader = new StreamReader(file.OpenReadStream()))
+            {
+                while(!streamReader.EndOfStream)
+                {
+                    var line = await streamReader.ReadLineAsync();
+                    string[] values = line.Split(',');
+
+                    if (values.Length == 5)
+                    {
+                        var title = values[0];
+                        var author = values[1];
+                        if (!int.TryParse(values[2], out int publicationYear))
+                        {
+                            return BadRequest($"Invalid publication year for book: {title}");
+                        }
+                        if (!int.TryParse(values[3], out int bookCopies))
+                        {
+                            return BadRequest($"Invalid number of copies for book: {title}");
+                        }
+                        var categoryId = values[4];
+
+                        var category = await _context.Categories.FirstOrDefaultAsync(c => c.Name == categoryId);
+                        if (category == null)
+                        {
+                            category = new Category { Name = categoryId };
+                            _context.Categories.Add(category);
+                            await _context.SaveChangesAsync();
+                        }
+                        var book = new Book
+                        {
+                            Title = title,
+                            Author = author,
+                            PublicationYear = publicationYear,
+                            BookCopies = bookCopies,
+                            CategoryId = category.CategoryId
+                        };
+                        _context.Books.Add(book);
+                    }
+                }
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Index));
+        }
+        
     }
 }

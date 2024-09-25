@@ -56,7 +56,7 @@ namespace Library.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ReviewId,Rating,Comment,BookId")] Review review)
+        public async Task<IActionResult> Create([Bind("ReviewId,Username,Rating,Comment,BookId")] Review review)
         {
             ModelState.Remove("Book");
             if (ModelState.IsValid)
@@ -82,7 +82,7 @@ namespace Library.Controllers
             {
                 return NotFound();
             }
-            ViewData["BookId"] = new SelectList(_context.Books, "BookId", "Author", review.BookId);
+            ViewData["BookId"] = new SelectList(_context.Books, "BookId", "Title", review.BookId);
             return View(review);
         }
 
@@ -91,12 +91,13 @@ namespace Library.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ReviewId,Rating,Comment,BookId")] Review review)
+        public async Task<IActionResult> Edit(int id, [Bind("ReviewId,Username,Rating,Comment,BookId")] Review review)
         {
             if (id != review.ReviewId)
             {
                 return NotFound();
             }
+
             ModelState.Remove("Book");
             if (ModelState.IsValid)
             {
@@ -118,7 +119,7 @@ namespace Library.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BookId"] = new SelectList(_context.Books, "BookId", "Author", review.BookId);
+            ViewData["BookId"] = new SelectList(_context.Books, "BookId", "Title", review.BookId);
             return View(review);
         }
 

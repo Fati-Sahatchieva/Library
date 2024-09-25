@@ -9,6 +9,23 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+<div class="row">
+    <div class="col-md-12">
+        <a asp-action="ExportToCSV" class="btn btn-primary">Export List</a>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <form asp-action="ImportFromCSV" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="file">Import List</label>
+                <input type="file" name="file" class="form-control" />
+            </div>
+            <button type="submit" class="btn btn-success">Import</button>
+        </form>
+    </div>
+</div>
 <table class="table">
     <thead>
         <tr>
@@ -19,10 +36,10 @@
                 @Html.DisplayNameFor(model => model.Author)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ReleasedDate)
+                @Html.DisplayNameFor(model => model.PublicationYear)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BooksCount)
+                @Html.DisplayNameFor(model => model.BookCopies)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Category)
@@ -40,10 +57,10 @@
                 @Html.DisplayFor(modelItem => item.Author)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ReleasedDate)
+                @Html.DisplayFor(modelItem => item.PublicationYear)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.BooksCount)
+                @Html.DisplayFor(modelItem => item.BookCopies)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Category.Name)

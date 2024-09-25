@@ -8,10 +8,9 @@ namespace Library.Models
         public int CategoryId { get; set; }
 
         [Required]
-        [Display(Name = "Име")]
         [MaxLength(64)]
         public string Name { get; set; }
-        public ICollection<Book> Books { get; set; } = new List<Book>();
+        public List<Book> Books { get; set; } = new List<Book>();
 
     }
 }

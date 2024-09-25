@@ -11,16 +11,18 @@ namespace Library.Models
         [Required]
         [MaxLength(60)]
         public string Title { get; set; }
+
         [Required]
         [MaxLength(60)]
         public string Author { get; set; }
 
         [Required]
-        public DateOnly ReleasedDate { get; set; }
+        [Range(1000, 9999)]
+        public int PublicationYear { get; set; }
 
         [Required]
         [Range(1, 1000)]
-        public int BooksCount { get; set; }
+        public int BookCopies { get; set; }
 
         [Required]
         public int CategoryId { get; set; }
@@ -28,7 +30,7 @@ namespace Library.Models
         [ForeignKey("CategoryId")]
         public Category Category { get; set; }
 
-        public ICollection<Review> Reviews { get; set; }
+        public List<Review> Reviews { get; set; } = new List<Review>();
 
     }
 }
