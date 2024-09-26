@@ -41,7 +41,19 @@
             @Html.DisplayFor(model => model.Category.Name)
         </dd>
     </dl>
-
+    <br />
+    @if (Model.BookCopies > 0)
+    {
+        <form asp-action="Borrow" method="post">
+            <input type="hidden" name="bookId" value="@Model.BookId" />
+            <button type="submit" class="btn btn-primary">Borrow</button>
+        </form>
+    }
+    else
+    {
+        <p>No avaliable book copies.</p>
+    }
+    
     <h3>Reviews</h3>
     @if (Model.Reviews != null && Model.Reviews.Any())
     {

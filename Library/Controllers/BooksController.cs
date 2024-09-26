@@ -231,6 +231,38 @@ namespace Library.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
-        
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Borrow(int bookId)
+        {
+            
+            var book = await _context.Books.FindAsync(bookId);
+
+            if (book == null)
+            {
+                return NotFound();
+            }
+
+            
+            if (book.BookCopies > 0)
+            {
+                book.BookCopies--;  
+                _context.Update(book);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                
+                return BadRequest("Няма налични копия за заемане.");
+            }
+
+         
+            return RedirectToAction("Details", new { id = bookId });
+        }
+
+
+
     }
 }
