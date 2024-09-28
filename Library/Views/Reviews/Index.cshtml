@@ -22,7 +22,7 @@
                 @Html.DisplayNameFor(model => model.Comment)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Book)
+                Book
             </th>
             <th></th>
         </tr>
@@ -40,12 +40,12 @@
                 @Html.DisplayFor(modelItem => item.Comment)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Book.Author)
+                @Html.DisplayFor(modelItem => item.Book.Title)
             </td>
             <td>
                 <a asp-action="Edit" class="btn btn-warning" asp-route-id="@item.ReviewId">Edit</a> |
-                    <a asp-action="Details" class="btn btn-info" asp-route-id="@item.ReviewId">Details</a> |
-                    <a asp-action="Delete" class="btn btn-danger" asp-route-id="@item.ReviewId">Delete</a>
+                <a asp-action="Details" class="btn btn-info" asp-route-id="@item.ReviewId">Details</a> |
+                <a asp-action="Delete" class="btn btn-danger" asp-route-id="@item.ReviewId">Delete</a>
             </td>
         </tr>
 }

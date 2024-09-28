@@ -8,12 +8,8 @@
 </p>
 <p>
     <a asp-action="Create" class="btn btn-success">Create New</a>
+    <a asp-action="ExportToCSV" class="btn btn-primary">Export List</a>
 </p>
-<div class="row">
-    <div class="col-md-12">
-        <a asp-action="ExportToCSV" class="btn btn-primary">Export List</a>
-    </div>
-</div>
 
 <div class="row mt-4">
     <div class="col-md-12">
@@ -31,21 +27,7 @@
         </form>
     </div>
 </div>
-@* <div class="row mt-4">
-    <div class="col-md-12">
-        <form asp-action="ImportFromCSV" method="post" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="file" class="align-self-lg-auto">Import List</label>
-                <div>
-                    <input type="file" name="file" class="form-control-file" id="file" />
-                </div>
-            </div>
-            <button type="submit" class="btn btn-success">Import</button>
-        </form>
-    </div>
-</div> *@
 
-@* <table class="table table-success table-responsive table-hover"> *@
 <table class="table table-hover">
     <thead>
         <tr class="table-primary">
@@ -56,10 +38,10 @@
                 @Html.DisplayNameFor(model => model.Author)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PublicationYear)
+                Publication Year
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BookCopies)
+                Copies
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Category)
@@ -86,7 +68,7 @@
                 @Html.DisplayFor(modelItem => item.Category.Name)
             </td>
             <td>
-                    <a asp-action="Edit" class="btn btn-warning" asp-route-id="@item.BookId">Edit</a> |
+                <a asp-action="Edit" class="btn btn-warning" asp-route-id="@item.BookId">Edit</a> |
                 <a asp-action="Details" class="btn btn-info" asp-route-id="@item.BookId">Details</a> |
                 <a asp-action="Delete" class="btn btn-danger" asp-route-id="@item.BookId">Delete</a>
                     
