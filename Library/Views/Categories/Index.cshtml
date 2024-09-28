@@ -3,15 +3,16 @@
 @{
     ViewData["Title"] = "Index";
 }
-
-<h1>Index</h1>
-
+<p>
+<h1>Categories</h1>
+</p>
 <p>
     <a asp-action="Create" class="btn btn-success">Create New</a>
 </p>
-<table class="table table-success table-responsive table-hover">
+@* <table class="table table-success table-responsive table-hover"> *@
+<table class="table table-hover">
     <thead>
-        <tr>
+        <tr class="table-primary">
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
