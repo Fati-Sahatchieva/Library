@@ -3,9 +3,9 @@
 @{
     ViewData["Title"] = "Details";
 }
-
+<p>
 <h1>Details</h1>
-
+</p>
 <div>
     <h4>Book</h4>
     <hr />
@@ -41,20 +41,22 @@
             @Html.DisplayFor(model => model.Category.Name)
         </dd>
     </dl>
-    <br />
+    @* <br /> *@
     @if (Model.BookCopies > 0)
     {
         <form asp-action="Borrow" method="post">
             <input type="hidden" name="bookId" value="@Model.BookId" />
-            <button type="submit" class="btn btn-primary">Borrow</button>
+            <button type="submit" class="btn btn-info">Borrow</button>
         </form>
     }
     else
     {
         <p>No avaliable book copies.</p>
     }
-    
+    <br />
+    <p>
     <h3>Reviews</h3>
+    </p>
     @if (Model.Reviews != null && Model.Reviews.Any())
     {
         <ul>
@@ -73,6 +75,7 @@
         <p>No reviews yet.</p>
     }
 
+    <br />
     <h4>Add a Review</h4>
     <form asp-action="Create" asp-controller="Reviews" method="post">
         <input type="hidden" asp-for="BookId" value="@Model.BookId" name="BookId" />
@@ -90,9 +93,11 @@
             <label for="Comment">Review</label>
             <textarea id="Comment" name="Comment" class="form-control"></textarea>
         </div>
-
+        <br />
         <button type="submit" class="btn btn-primary">Submit Review</button>
+        
     </form>
+    <br/>
 </div>
 <div>
     <a asp-action="Edit" class="btn btn-warning" asp-route-id="@Model?.BookId">Edit</a> |

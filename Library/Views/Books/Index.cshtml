@@ -3,9 +3,9 @@
 @{
     ViewData["Title"] = "Index";
 }
-
-<h1>Index</h1>
-
+<p>
+<h1>Book Store</h1>
+</p>
 <p>
     <a asp-action="Create" class="btn btn-success">Create New</a>
 </p>
@@ -21,9 +21,13 @@
         <form asp-action="ImportFromCSV" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="file" class="align-self-lg-auto">Import List</label>
+                <p>
                 <input type="file" name="file" class="form-control" />
+                </p>
             </div>
+            <p>
             <button type="submit" class="btn btn-success">Import</button>
+            </p>
         </form>
     </div>
 </div>
@@ -41,9 +45,10 @@
     </div>
 </div> *@
 
-<table class="table table-success table-responsive table-hover">
+@* <table class="table table-success table-responsive table-hover"> *@
+<table class="table table-hover">
     <thead>
-        <tr>
+        <tr class="table-primary">
             <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
